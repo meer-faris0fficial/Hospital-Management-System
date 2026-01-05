@@ -1,306 +1,223 @@
-# Hospital Management System
+# Hospital Management System (C)
 
-A comprehensive C-based Hospital Management System that allows users to manage hospital data, patient records, and user authentication. The system provides features for adding, displaying, filtering, and sorting hospital information along with patient management capabilities.
-
-## Overview
-
-This project is a command-line hospital management application built in C that demonstrates essential data structures, file I/O operations, and user authentication mechanisms. It enables administrators and staff to efficiently manage hospital records and patient admissions.
-
-## Features
-
-### Authentication System
-- **User Sign-Up**: Create new user accounts with username and password
-- **User Login**: Secure login mechanism with credential verification
-- **User Management**: User data persisted in `users.txt` file
-
-### Hospital Management
-- **Add Hospital Data**: Create new hospital records with detailed information
-- **Display All Hospitals**: View complete list of hospitals in the system
-- **Filter by City**: Display hospitals available in a specific city
-- **Sort by Bed Price**: Sort hospitals by daily bed cost (descending order)
-- **Sort by Available Beds**: Sort hospitals by number of available beds (descending)
-- **Sort by Name**: Alphabetical sorting of hospital names
-- **Sort by Rating & Reviews**: Sort hospitals by rating and review count (both descending)
-
-### Patient Management
-- **Add Patient Records**: Register new patients with hospital assignment
-- **Display All Patients**: View complete list of patient records
-- **Hospital Association**: Each patient is linked to their admitted hospital
-
-### Hospital Data Fields
-- Hospital ID (unique identifier)
-- Hospital Name
-- City Location
-- Available Beds
-- Bed Price (per day)
-- Rating (0-5 scale)
-- Number of Reviews
-
-### Patient Data Fields
-- Patient ID (unique identifier)
-- Patient Name
-- Age
-- Disease/Condition
-- Hospital ID (admission hospital)
-
-## Data Structures
-
-### Hospital Structure
-```c
-typedef struct {
-    int hospitalID;
-    char hospitalName[NAME_SIZE];
-    char city[CITY_SIZE];
-    int availableBeds;
-    float bedPrice;
-    float rating;
-    int reviews;
-} Hospital;
-```
-
-### Patient Structure
-```c
-typedef struct {
-    int patientID;
-    char patientName[NAME_SIZE];
-    int age;
-    char disease[DISEASE_SIZE];
-    int hospitalID;
-} Patient;
-```
-
-### User Structure
-```c
-typedef struct {
-    char username[USERNAME_SIZE];
-    char password[PASSWORD_SIZE];
-} User;
-```
-
-## Files Required
-
-The program uses three data files (automatically created if missing):
-
-1. **hospitals.txt** - Stores hospital records
-   - Format: `ID|Name|City|Beds|Price|Rating|Reviews`
-   - Example: `1|City Hospital|Karachi|50|5000.00|4.5|120`
-
-2. **patients.txt** - Stores patient records
-   - Format: `ID|Name|Age|Disease|HospitalID`
-   - Example: `1|Ahmed Khan|35|Heart Disease|1`
-
-3. **users.txt** - Stores user credentials
-   - Format: `Username|Password`
-   - Example: `admin|password123`
-
-## Installation & Compilation
-
-### Prerequisites
-- GCC compiler or any C compiler
-- Windows, Linux, or macOS operating system
-
-### Compilation Steps
-
-**Windows:**
-```bash
-gcc -o hospital_system protype3.c
-hospital_system.exe
-```
-
-**Linux/macOS:**
-```bash
-gcc -o hospital_system protype3.c
-./hospital_system
-```
-
-## Usage
-
-### Starting the Program
-1. Compile and run the executable
-2. You will see the welcome banner
-3. Choose to Login, Sign Up, or Exit
-
-### First Time Users
-1. Select "Sign Up" from the authentication menu
-2. Create a username and password
-3. Login with your credentials
-
-### Main Menu Options
-
-After successful login, you can access:
-- **Option 1**: Add new hospital information
-- **Option 2**: View all hospital records
-- **Option 3**: Search hospitals by city
-- **Option 4**: Sort hospitals by bed price
-- **Option 5**: Sort hospitals by available beds
-- **Option 6**: Sort hospitals alphabetically
-- **Option 7**: Sort hospitals by rating and reviews
-- **Option 8**: Add new patient record
-- **Option 9**: View all patient records
-- **Option 10**: Exit program
-
-## Program Flow
-
-```
-Start
-  ↓
-Authentication (Login/Sign Up)
-  ↓
-Main Menu
-  ├── Hospital Management
-  │   ├── Add Hospital
-  │   ├── Display Hospitals
-  │   ├── Filter by City
-  │   └── Sort Operations
-  ├── Patient Management
-  │   ├── Add Patient
-  │   └── Display Patients
-  └── Exit
-```
-
-## Key Functions
-
-### Authentication Functions
-- `signup()` - Register new user account
-- `login()` - Authenticate existing user
-- `clearInputBuffer()` - Clear input buffer after scanf
-
-### Hospital Functions
-- `addHospital()` - Add new hospital record
-- `displayHospitals()` - Show all hospitals
-- `displayHospitalsByCity()` - Filter hospitals by location
-- `sortHospitalsByBedPrice()` - Sort by price (descending)
-- `sortHospitalsByAvailableBeds()` - Sort by bed availability
-- `sortHospitalsByName()` - Alphabetical sorting
-- `sortHospitalsByRatingAndReviews()` - Sort by rating/reviews
-- `loadHospitals()` - Load hospital data from file
-
-### Patient Functions
-- `addPatient()` - Register new patient
-- `displayPatients()` - Show all patient records
-- `loadPatients()` - Load patient data from file
-- `getHospitalNameByID()` - Retrieve hospital name for display
-
-### Utility Functions
-- `clearScreen()` - Clear console screen (cross-platform)
-- `printWelcomeBanner()` - Display welcome message
-- `countRecords()` - Count total records in file
-
-## Error Handling
-
-The program includes error handling for:
-- Invalid user input (non-numeric entries)
-- File access errors
-- Missing or corrupted data files
-- Invalid credentials during login
-- Duplicate usernames during signup
-
-## Technical Details
-
-### Constants
-- `NAME_SIZE`: 50 characters (names, hospital names)
-- `CITY_SIZE`: 30 characters (city names)
-- `DISEASE_SIZE`: 50 characters (disease descriptions)
-- `LINE_SIZE`: 256 characters (file line buffer)
-- `USERNAME_SIZE`: 30 characters
-- `PASSWORD_SIZE`: 30 characters
-
-### Data Storage Format
-All data is stored in pipe-delimited (|) text files for easy parsing and portability.
-
-### Sorting Algorithm
-The program uses Bubble Sort algorithm for sorting operations with O(n²) time complexity. The implementation compares adjacent elements and swaps them based on the sorting criteria.
-
-### Memory Management
-- Dynamic memory allocation using `malloc()` for arrays
-- Proper `free()` calls after memory usage
-- Stack-based allocation for local variables
-
-## Limitations & Future Enhancements
-
-### Current Limitations
-- No data encryption for passwords
-- Limited input validation
-- Basic bubble sort (could use quicksort for better performance)
-- No update/edit functionality for existing records
-- No delete functionality for records
-- Single-user active session per program run
-
-### Suggested Enhancements
-1. Add update and delete functionality for hospitals and patients
-2. Implement password encryption
-3. Add more advanced search filters (by rating range, price range, etc.)
-4. Implement database connection (SQLite, MySQL)
-5. Add appointment/booking system
-6. Create doctor and staff management modules
-7. Implement better input validation
-8. Add data backup and recovery features
-9. Multi-user concurrent access support
-10. Generate reports (occupancy rates, revenue, etc.)
-
-## Platform Compatibility
-
-- **Windows**: Uses `system("cls")` for screen clearing
-- **Linux/macOS**: Uses `system("clear")` for screen clearing
-- The program automatically detects the platform using `#ifdef _WIN32`
-
-## License
-
-This project is provided as-is for educational purposes.
-
-## Author
-
-Created for educational purposes as part of a C programming course or assignment.
-
-## Support
-
-For issues or questions:
-1. Check that all required files (hospitals.txt, patients.txt, users.txt) are in the same directory
-2. Ensure proper compilation with a C compiler
-3. Verify input format when adding records
-4. Check file permissions for read/write access
-
-## Version History
-
-- **v1.0** (Current): Initial release with core features
-  - User authentication (login/signup)
-  - Hospital management (add, display, filter, sort)
-  - Patient management (add, display)
-  - Cross-platform compatibility
+A simple console-based Hospital Management System written in C.  
+This program lets users sign up / log in, add and view hospital and patient records, search hospitals by city, and sort hospitals by various criteria (price, available beds, name, rating & reviews). Data is stored in plain text files.
 
 ---
 
-**Note**: This is a prototype application (protype3.c) suitable for learning C programming concepts including file I/O, data structures, dynamic memory allocation, and basic algorithms.
-```
+## Table of Contents
 
-I've created a comprehensive README that covers:
+- [Project Overview](#project-overview)
+- [Features](#features)
+- [Files & Data Format](#files--data-format)
+- [Build & Run](#build--run)
+  - [Windows (recommended)](#windows-recommended)
+  - [POSIX (Linux/macOS) — notes](#posix-linuxmacos---notes)
+- [Usage Examples](#usage-examples)
+- [Functions & Flow](#functions--flow)
+- [Known Issues & Limitations](#known-issues--limitations)
+- [Security & Improvements](#security--improvements)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
 
-- **Project overview** and purpose
-- **All features** with detailed descriptions
-- **Data structures** with code examples
-- **Installation and compilation** instructions for both Windows and Linux/macOS
-- **Usage instructions** with menu options
-- **Program flow diagram**
-- **All key functions** with brief descriptions
-- **Error handling** information
-- **Technical details** about constants and algorithms
-- **Limitations and enhancement suggestions**
-- **Platform compatibility** notes
-- **Version history**
+---
 
-This README provides everything a user or developer needs to understand, compile, run, and modify the Hospital Management System. You can save this as `README.md` in your project directory.I've created a comprehensive README that covers:
+## Project Overview
 
-- **Project overview** and purpose
-- **All features** with detailed descriptions
-- **Data structures** with code examples
-- **Installation and compilation** instructions for both Windows and Linux/macOS
-- **Usage instructions** with menu options
-- **Program flow diagram**
-- **All key functions** with brief descriptions
-- **Error handling** information
-- **Technical details** about constants and algorithms
-- **Limitations and enhancement suggestions**
-- **Platform compatibility** notes
-- **Version history**
+This project provides a minimal, file-based hospital management application. It demonstrates basic file I/O, simple authentication, structures, and command-line UI with color escape sequences.
 
-This README provides everything a user or developer needs to understand, compile, run, and modify the Hospital Management System. 
+It is intended as a learning/demo application and not for production use.
+
+---
+
+## Features
+
+- Text-based sign-up and login system (username|password stored in `users.txt`)
+- Add / display hospital records
+- Add / display patient records (patients reference hospitals by ID)
+- Display hospitals filtered by city (alphabetically sorted)
+- Sorting features:
+  - Sort by bed price (high → low)
+  - Sort by available beds (high → low)
+  - Sort by hospital name (A → Z)
+  - Sort by rating (then reviews)
+- ANSI color output for improved readability (may require terminal support)
+
+---
+
+## Files & Data Format
+
+- Source file(s)
+  - main C file (the code you provided)
+- Data files (plain text, pipe-separated fields)
+  - `hospitals.txt` — hospital records, one per line:
+    Format:
+    ```
+    hospital_id|hospital_name|city|available_beds|bed_price|rating|reviews
+    ```
+    Example:
+    ```
+    101|Saint Mary Hospital|Springfield|120|250.00|4.5|150
+    ```
+  - `patients.txt` — patient records, one per line:
+    Format:
+    ```
+    patient_id|patient_name|age|disease|hospital_id
+    ```
+    Example:
+    ```
+    501|John Doe|45|Pneumonia|101
+    ```
+  - `users.txt` — user credentials, one per line:
+    Format:
+    ```
+    username|password
+    ```
+    Example:
+    ```
+    alice|password123
+    ```
+
+---
+
+## Build & Run
+
+The provided code includes Windows-specific headers (`<windows.h>` and `conio.h`) and uses `Sleep()` and `getch()`. Recommended platform: Windows (MinGW or Visual Studio). If you want to run on POSIX systems, see notes below.
+
+No external libraries are required.
+
+### Windows (recommended)
+
+Using MinGW (gcc):
+
+1. Open a Command Prompt or PowerShell with MinGW in PATH.
+2. Compile:
+   ```sh
+   gcc -o hospital_management main.c
+   ```
+   - If your environment requires linking extra libs, default MinGW should work as-is.
+3. Run:
+   ```sh
+   hospital_management.exe
+   ```
+Notes:
+- If `getch()` isn't available, MinGW generally provides `getch()` in `conio.h`. If using MSVC, replace `getch()` with `_getch()` as appropriate.
+- The ANSI color escape codes used may not render colors by default in legacy Windows cmd. Use Windows Terminal or enable ANSI processing:
+  - Alternatively, modify the code to call Windows console APIs (SetConsoleMode with ENABLE_VIRTUAL_TERMINAL_PROCESSING).
+
+### Visual Studio (cl)
+
+1. Open "Developer Command Prompt for VS".
+2. Compile:
+   ```sh
+   cl /Fe:hospital_management.exe main.c
+   ```
+3. Run:
+   ```sh
+   hospital_management.exe
+   ```
+
+### POSIX (Linux/macOS) — notes
+
+The code uses Windows-only APIs (Sleep, windows.h, conio.h). To port:
+- Replace `#include <windows.h>` and `Sleep(ms)` with `<unistd.h>` and `sleep(seconds)` or `usleep(microseconds)`.
+- Replace `getch()` with `getchar()` or use termios to implement a non-buffered single-key input.
+- Remove or guard Windows-specific headers with `#ifdef _WIN32` blocks and add POSIX equivalents.
+- ANSI color escapes will work in POSIX terminals out of the box.
+
+Example adjustments:
+- Sleep(1500) → usleep(1500 * 1000) (remember to `#include <unistd.h>`).
+- getch() → getchar() (but getchar waits for Enter).
+
+---
+
+## Usage Examples
+
+- Start program → sign up or login.
+- After login you can:
+  - Add a hospital (enter ID, name, city, beds, price, rating, reviews).
+  - Display all hospitals.
+  - Filter hospitals by city (enter exact city name).
+  - Add a patient (patient ID, name, age, disease, hospital ID).
+  - Display patients (hospital name is looked up from hospital file).
+  - Use sorting submenu to see different sorted views.
+
+Sample workflow:
+1. Sign up: `alice` / `alicepass`
+2. Login as `alice`
+3. Add hospital: `101 | St. John's | Gotham | 50 | 180.00 | 4.2 | 34`
+4. Add patient: `201 | Bruce Wayne | 35 | Broken Arm | 101`
+5. Display patients — shows hospital name for `101`.
+
+---
+
+## Functions & Flow (brief)
+
+- Authentication:
+  - `signup()` — append new user to `users.txt`.
+  - `login()` — validate credentials against `users.txt`.
+- Hospital management:
+  - `add_hospital()` — append record to `hospitals.txt`.
+  - `display_hospitals()` — show formatted list.
+  - `display_hospitals_by_city()` — filter, sort alphabetically, and display.
+  - `load_hospitals()` / `count_records()` — helpers for loading and counting.
+- Patient management:
+  - `add_patient()` — append record to `patients.txt`.
+  - `display_patients()` — shows list with hospital name resolved by `get_hospital_name_by_id()`.
+- Sorting helpers:
+  - `sort_hospitals_by_bed_price()`, `sort_hospitals_by_available_beds()`, `sort_hospitals_by_name()`, `sort_hospitals_by_rating_and_reviews()` — in-memory bubble sort then display.
+
+---
+
+## Known Issues & Limitations
+
+- Passwords are stored in plain text in `users.txt`. Never use this for real systems.
+- No concurrency control or file locking — simultaneous writes may corrupt data.
+- Minimal input validation (e.g., duplicate hospital/patient IDs not prevented).
+- All I/O is synchronous and blocking — not suitable for large datasets.
+- Uses Bubble Sort (O(n^2)) — acceptable for small data sets but not scalable.
+- The code mixes scanf and fgets; code currently uses `clear_input_buffer()` to reduce input issues but edge cases remain.
+- Color escape codes may not display in all terminals (Windows cmd may need special handling).
+
+---
+
+## Security & Recommended Improvements
+
+Immediate improvements before any real use:
+- Hash passwords (bcrypt / Argon2) rather than storing raw passwords.
+- Use a proper database (SQLite) instead of plain files to ensure data integrity and concurrent access.
+- Add input validation and unique ID checks.
+- Implement file locking (flock/LockFile) if staying with file-based storage.
+- Replace bubble sort with qsort() or more efficient algorithms for larger lists.
+- Add logging and error handling enhancements.
+
+---
+
+## Contributing
+
+- Fork the repository, make changes on a feature branch, and submit a pull request.
+- Suggested first issues:
+  - Port to POSIX-compatible build.
+  - Replace plaintext passwords with hashed storage.
+  - Add a CLI argument to set data file locations.
+  - Add unit tests (for parsing/saving functions) and example data.
+
+Please follow a consistent style and add comments for any non-trivial changes.
+
+---
+
+## License
+
+Choose a license for your project. Example: MIT License — include a `LICENSE` file if you want to release it publicly.
+
+---
+
+## Contact
+
+If you'd like, I can:
+- Create a polished repository structure for you (with a Makefile, .gitignore, and sample data),
+- Produce a Windows- and POSIX-compatible version,
+- Or add improvements like password hashing and SQLite migration.
+
+Tell me which you'd prefer and I will prepare the next set of files or instructions.
