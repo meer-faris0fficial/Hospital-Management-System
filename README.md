@@ -207,17 +207,3 @@ Please follow a consistent style and add comments for any non-trivial changes.
 
 ---
 
-## License
-
-Choose a license for your project. Example: MIT License — include a `LICENSE` file if you want to release it publicly.
-
----
-
-## Contact
-
-If you'd like, I can:
-- Create a polished repository structure for you (with a Makefile, .gitignore, and sample data),
-- Produce a Windows- and POSIX-compatible version,
-- Or add improvements like password hashing and SQLite migration.
-
-Tell me which you'd prefer and I will prepare the next set of files or instructions.
