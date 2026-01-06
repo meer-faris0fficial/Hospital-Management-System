@@ -179,7 +179,8 @@ int main()
             printf(BLUE "_________________________________________________________________________________________________________________________\n" RESET);
             printf(YELLOW "1. Add Hospital Data\n");
             printf("2. Display Hospital Data\n");
-            printf("3. Display Hospitals by City\n" RESET);
+            printf("3. Display Hospitals by City\n");
+            printf("4. Return to the main menu\n" RESET);
              printf(BLUE "_________________________________________________________________________________________________________________________\n" RESET);
             printf(GREEN "Enter your choice: " RESET);
             
@@ -188,7 +189,7 @@ int main()
             {
                 printf(RED "Invalid input!\n" RESET);
                 clear_input_buffer();
-                printf("Enter the valid option(1, 2, or 3): ");
+                printf(GREEN "Enter the valid option(1, 2, 3 or 4): " RESET);
             }
             clear_input_buffer();
             
@@ -207,6 +208,9 @@ int main()
             case 3:
                 display_hospitals_by_city();  // Show hospitals in specific city
                 break;
+            case 4:
+                continue;
+                break;
             default:
                 printf(RED "Invalid choice! Try again.\n" RESET);
             }
@@ -220,7 +224,8 @@ int main()
             printf(MAGENTA BOLD "\n--- Patient Management ---\n" RESET);
             printf(BLUE "_________________________________________________________________________________________________________________________\n" RESET);
             printf(YELLOW "1. Add Patient Data\n");
-            printf("2. Display Patient Data\n" RESET);
+            printf("2. Display Patient Data\n");
+            printf("3. Return to the main menu\n" RESET);
             printf(BLUE "_________________________________________________________________________________________________________________________\n" RESET);
             printf(GREEN "Enter your choice: " RESET);
             
@@ -245,6 +250,9 @@ int main()
             case 2:
                 display_patients();  // Show all patients
                 break;
+            case 3:
+                continue;
+                break;
             default:
                 printf(RED "Invalid choice! Try again.\n" RESET);
             }
@@ -260,7 +268,8 @@ int main()
             printf(YELLOW "1. Sort by Bed Price\n");
             printf("2. Sort by Available Beds\n");
             printf("3. Sort by Hospital Name\n");
-            printf("4. Sort by Rating and Reviews\n" RESET);
+            printf("4. Sort by Rating and Reviews\n");
+            printf("5. Return to the main menu\n" RESET);
             printf(BLUE "_________________________________________________________________________________________________________________________\n" RESET);
             printf(GREEN "Enter your choice: " RESET);
             
@@ -291,6 +300,9 @@ int main()
             case 4:
                 sort_hospitals_by_rating_and_reviews();  // Sort by rating and reviews
                 break;
+            case 5:
+                continue;
+                break;
             default:
                 printf(RED "Invalid choice! Try again.\n" RESET);
             }
@@ -308,8 +320,7 @@ int main()
     
         // printf(GREEN "\nPress Enter to continue..." RESET);
         // getchar();  // Wait for user to press Enter
-        press_any_key_to_continue();
-        
+        press_any_key_to_continue();   
     }
 
     return 0;  // Program ends successfully
