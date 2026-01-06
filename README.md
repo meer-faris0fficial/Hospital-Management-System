@@ -1,209 +1,127 @@
 # Hospital Management System (C)
 
 A simple console-based Hospital Management System written in C.  
-This program lets users sign up / log in, add and view hospital and patient records, search hospitals by city, and sort hospitals by various criteria (price, available beds, name, rating & reviews). Data is stored in plain text files.
+Features include user signup/login, hospital records (add, list, filter, sort), and patient records (add, list). Data is saved to plain text files.
 
----
-
-## Table of Contents
-
-- [Project Overview](#project-overview)
-- [Features](#features)
-- [Files & Data Format](#files--data-format)
-- [Build & Run](#build--run)
-  - [Windows (recommended)](#windows-recommended)
-  - [POSIX (Linux/macOS) — notes](#posix-linuxmacos---notes)
-- [Usage Examples](#usage-examples)
-- [Functions & Flow](#functions--flow)
-- [Known Issues & Limitations](#known-issues--limitations)
-- [Security & Improvements](#security--improvements)
-- [Contributing](#contributing)
-- [License](#license)
-- [Contact](#contact)
-
----
-
-## Project Overview
-
-This project provides a minimal, file-based hospital management application. It demonstrates basic file I/O, simple authentication, structures, and command-line UI with color escape sequences.
-
-It is intended as a learning/demo application and not for production use.
+> NOTE: This program uses Windows console headers (`windows.h`, `conio.h`) and ANSI escape sequences for colored output. It is intended to build and run on Windows (MinGW or MSVC). See the "Build & Run" section for platform notes and tips.
 
 ---
 
 ## Features
-
-- Text-based sign-up and login system (username|password stored in `users.txt`)
-- Add / display hospital records
-- Add / display patient records (patients reference hospitals by ID)
-- Display hospitals filtered by city (alphabetically sorted)
-- Sorting features:
-  - Sort by bed price (high → low)
-  - Sort by available beds (high → low)
-  - Sort by hospital name (A → Z)
-  - Sort by rating (then reviews)
-- ANSI color output for improved readability (may require terminal support)
+- User authentication: signup and login (credentials stored in plain text).
+- Hospital management:
+  - Add hospital records (ID, name, city, beds, price, rating, reviews)
+  - Display all hospitals
+  - Display hospitals by city (alphabetically sorted)
+  - Sorting utilities:
+    - Sort by bed price (descending)
+    - Sort by available beds (descending)
+    - Sort by name (A→Z)
+    - Sort by rating (then reviews)
+- Patient management:
+  - Add patient records (ID, name, age, disease, hospital ID)
+  - Display patients (shows hospital name via hospital ID lookup)
+- Simple, file-based storage (no external DB).
 
 ---
 
-## Files & Data Format
-
-- Source file(s)
-  - main C file (the code you provided)
-- Data files (plain text, pipe-separated fields)
-  - `hospitals.txt` — hospital records, one per line:
-    Format:
-    ```
-    hospital_id|hospital_name|city|available_beds|bed_price|rating|reviews
-    ```
-    Example:
-    ```
-    101|Saint Mary Hospital|Springfield|120|250.00|4.5|150
-    ```
-  - `patients.txt` — patient records, one per line:
-    Format:
-    ```
-    patient_id|patient_name|age|disease|hospital_id
-    ```
-    Example:
-    ```
-    501|John Doe|45|Pneumonia|101
-    ```
-  - `users.txt` — user credentials, one per line:
-    Format:
-    ```
-    username|password
-    ```
-    Example:
-    ```
-    alice|password123
-    ```
+## Files Used by the Program
+- `hospitals.txt` — stores hospital records; one record per line in pipe-separated format:
+  id|name|city|available_beds|bed_price|rating|reviews
+  Example:
+  101|City General Hospital|Springfield|50|75.00|4.3|128
+- `patients.txt` — stores patient records; one record per line:
+  id|name|age|disease|hospital_id
+  Example:
+  201|John Doe|45|Pneumonia|101
+- `users.txt` — stores user credentials in plain text:
+  username|password
+  Example:
+  alice|password123
 
 ---
 
 ## Build & Run
 
-The provided code includes Windows-specific headers (`<windows.h>` and `conio.h`) and uses `Sleep()` and `getch()`. Recommended platform: Windows (MinGW or Visual Studio). If you want to run on POSIX systems, see notes below.
+### Requirements
+- Windows (recommended), or adapt the source for POSIX systems.
+- C compiler:
+  - MinGW (gcc) or Microsoft Visual C++ (cl).
 
-No external libraries are required.
+### Compile (MinGW / msys)
+Open a terminal in the folder containing the .c file and run:
+```
+gcc -o hms.exe main.c
+```
+(Replace `main.c` with your source filename.)
 
-### Windows (recommended)
+### Compile (MSVC)
+Open Visual Studio Developer Command Prompt:
+```
+cl /Fe:hms.exe main.c
+```
 
-Using MinGW (gcc):
+### Run
+From the console:
+```
+hms.exe
+```
 
-1. Open a Command Prompt or PowerShell with MinGW in PATH.
-2. Compile:
-   ```sh
-   gcc -o hospital_management main.c
-   ```
-   - If your environment requires linking extra libs, default MinGW should work as-is.
-3. Run:
-   ```sh
-   hospital_management.exe
-   ```
-Notes:
-- If `getch()` isn't available, MinGW generally provides `getch()` in `conio.h`. If using MSVC, replace `getch()` with `_getch()` as appropriate.
-- The ANSI color escape codes used may not render colors by default in legacy Windows cmd. Use Windows Terminal or enable ANSI processing:
-  - Alternatively, modify the code to call Windows console APIs (SetConsoleMode with ENABLE_VIRTUAL_TERMINAL_PROCESSING).
-
-### Visual Studio (cl)
-
-1. Open "Developer Command Prompt for VS".
-2. Compile:
-   ```sh
-   cl /Fe:hospital_management.exe main.c
-   ```
-3. Run:
-   ```sh
-   hospital_management.exe
-   ```
-
-### POSIX (Linux/macOS) — notes
-
-The code uses Windows-only APIs (Sleep, windows.h, conio.h). To port:
-- Replace `#include <windows.h>` and `Sleep(ms)` with `<unistd.h>` and `sleep(seconds)` or `usleep(microseconds)`.
-- Replace `getch()` with `getchar()` or use termios to implement a non-buffered single-key input.
-- Remove or guard Windows-specific headers with `#ifdef _WIN32` blocks and add POSIX equivalents.
-- ANSI color escapes will work in POSIX terminals out of the box.
-
-Example adjustments:
-- Sleep(1500) → usleep(1500 * 1000) (remember to `#include <unistd.h>`).
-- getch() → getchar() (but getchar waits for Enter).
+### Platform notes
+- The program includes `windows.h`, `conio.h`, and uses `Sleep()`. It is written primarily for Windows.
+- The program also prints ANSI color escape sequences. On modern Windows 10/11 consoles these are usually supported; otherwise run the program inside a terminal that supports ANSI (e.g., Windows Terminal, Git Bash, or enable Virtual Terminal Processing).
+- To build on Linux/macOS you must:
+  - Remove or ifdef out `windows.h`, `conio.h`, and `Sleep()` (replace with `unistd.h`/`sleep()`), and either remove colors or adapt them.
+  - Replace `getch()` with a portable alternative (e.g., getchar()/termios).
 
 ---
 
-## Usage Examples
-
-- Start program → sign up or login.
-- After login you can:
-  - Add a hospital (enter ID, name, city, beds, price, rating, reviews).
-  - Display all hospitals.
-  - Filter hospitals by city (enter exact city name).
-  - Add a patient (patient ID, name, age, disease, hospital ID).
-  - Display patients (hospital name is looked up from hospital file).
-  - Use sorting submenu to see different sorted views.
-
-Sample workflow:
-1. Sign up: `alice` / `alicepass`
-2. Login as `alice`
-3. Add hospital: `101 | St. John's | Gotham | 50 | 180.00 | 4.2 | 34`
-4. Add patient: `201 | Bruce Wayne | 35 | Broken Arm | 101`
-5. Display patients — shows hospital name for `101`.
+## Usage Overview
+1. Start the program.
+2. Signup (first-time) or Login with existing credentials.
+3. Use the Main Menu to select:
+   - Hospital Management: add hospitals, display all, or filter by city.
+   - Patient Management: add patients, display all patients (with hospital names).
+   - Sorting Features: sort hospitals by price, beds, name, or rating & reviews.
+4. Data is appended to the corresponding text files.
 
 ---
 
-## Functions & Flow (brief)
-
-- Authentication:
-  - `signup()` — append new user to `users.txt`.
-  - `login()` — validate credentials against `users.txt`.
-- Hospital management:
-  - `add_hospital()` — append record to `hospitals.txt`.
-  - `display_hospitals()` — show formatted list.
-  - `display_hospitals_by_city()` — filter, sort alphabetically, and display.
-  - `load_hospitals()` / `count_records()` — helpers for loading and counting.
-- Patient management:
-  - `add_patient()` — append record to `patients.txt`.
-  - `display_patients()` — shows list with hospital name resolved by `get_hospital_name_by_id()`.
-- Sorting helpers:
-  - `sort_hospitals_by_bed_price()`, `sort_hospitals_by_available_beds()`, `sort_hospitals_by_name()`, `sort_hospitals_by_rating_and_reviews()` — in-memory bubble sort then display.
+## Security & Limitations (Important)
+- Credentials are stored in `users.txt` in plain text. This is insecure for production use.
+- No input sanitization beyond basic checks; malformed input may cause unexpected behavior.
+- No concurrency control — simultaneous writers may corrupt files.
+- No validation that hospital IDs are unique or that a patient’s hospital ID exists (except basic display lookup which will show "Unknown" if missing).
+- No encryption, no password hashing, and no secure password handling.
 
 ---
 
-## Known Issues & Limitations
-
-- Passwords are stored in plain text in `users.txt`. Never use this for real systems.
-- No concurrency control or file locking — simultaneous writes may corrupt data.
-- Minimal input validation (e.g., duplicate hospital/patient IDs not prevented).
-- All I/O is synchronous and blocking — not suitable for large datasets.
-- Uses Bubble Sort (O(n^2)) — acceptable for small data sets but not scalable.
-- The code mixes scanf and fgets; code currently uses `clear_input_buffer()` to reduce input issues but edge cases remain.
-- Color escape codes may not display in all terminals (Windows cmd may need special handling).
-
----
-
-## Security & Recommended Improvements
-
-Immediate improvements before any real use:
-- Hash passwords (bcrypt / Argon2) rather than storing raw passwords.
-- Use a proper database (SQLite) instead of plain files to ensure data integrity and concurrent access.
-- Add input validation and unique ID checks.
-- Implement file locking (flock/LockFile) if staying with file-based storage.
-- Replace bubble sort with qsort() or more efficient algorithms for larger lists.
-- Add logging and error handling enhancements.
+## Suggested Improvements
+- Hash and salt passwords (e.g., use bcrypt/Argon2 externally or a secure library).
+- Use a binary file format or a database (SQLite) to store records safely.
+- Add validation for unique IDs and referential integrity (ensure patient hospital IDs exist).
+- Replace bubble sort with more efficient sorting (qsort).
+- Add edit/delete hospital & patient features.
+- Add input size checks and stronger input validation.
+- Implement cross-platform compatibility (POSIX wrappers).
+- Improve the UI (menu navigation, search features, filtering).
 
 ---
 
 ## Contributing
+This project is lightweight and file-based. Contributions are welcome — you can:
+- Submit improvements to build scripts or platform compatibility.
+- Harden security (password hashing, secure storage).
+- Add tests and sample datasets.
 
-- Fork the repository, make changes on a feature branch, and submit a pull request.
-- Suggested first issues:
-  - Port to POSIX-compatible build.
-  - Replace plaintext passwords with hashed storage.
-  - Add a CLI argument to set data file locations.
-  - Add unit tests (for parsing/saving functions) and example data.
-
-Please follow a consistent style and add comments for any non-trivial changes.
+If you want me to suggest or create patches (e.g., password hashing, POSIX port), tell me what you'd like next and I can propose changes.
 
 ---
 
+## License
+This project is released into the public domain using the CC0 1.0 Universal (CC0 1.0) Public Domain Dedication. See the included `LICENSE` file for full text.
+
+---
+
+## Author / Contact
+Original code provided by the user. For further edits, testing, or packaging, I can help convert this into a cross-platform CLI, add a Makefile, or prepare a GitHub repository structure.
